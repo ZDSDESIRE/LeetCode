@@ -21,6 +21,7 @@
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 
 #### 提交
+
 ```py
 # Python3
 class Solution:
@@ -35,6 +36,7 @@ class Solution:
 #### 参考
 
 ##### 方法一：归并排序
+
 **预备知识**
 
 「归并排序」是分治思想的典型应用，它包含这样三个步骤：
@@ -295,10 +297,176 @@ func mergeSort(nums []int, start, end int) int {
 
 「树状数组」是一种可以动态维护序列前缀和的数据结构，它的功能是：
 
-单点更新 update(i, v)： 把序列 ii 位置的数加上一个值 v，这题 v = 1
+单点更新 update(i, v)： 把序列 i 位置的数加上一个值 v，这题 v = 1
 区间查询 query(i)： 查询序列 [1 ⋯ i] 区间的区间和，即 i 位置的前缀和
-修改和查询的时间代价都是 O(\log n)，其中 n 为需要维护前缀和的序列的长度。
+修改和查询的时间代价都是 O(log n)，其中 n 为需要维护前缀和的序列的长度。
 
 **思路**
 
-记题目给定的序列为 a，我们规定 a_i 的取值集合为 aa 的「值域」。我们用桶来表示值域中的每一个数，桶中记录这些数字出现的次数。假设a = {5, 5, 2, 3, 6}，那么遍历这个序列得到的桶是这样的：
+记题目给定的序列为 a，我们规定 a_i 的取值集合为 a 的「值域」。我们用桶来表示值域中的每一个数，桶中记录这些数字出现的次数。假设 a = {5, 5, 2, 3, 6}，那么遍历这个序列得到的桶是这样的：
+
+```text
+index  ->  1 2 3 4 5 6 7 8 9
+value  ->  0 1 1 0 2 1 0 0 0
+```
+
+我们可以看出它第 i - 1 位的前缀和表示「有多少个数比 i 小」。那么我们可以从后往前遍历序列 a，记当前遍历到的元素为 a_i，我们把 a_i 对应的桶的值自增 1，把 i - 1 位置的前缀和加入到答案中算贡献。为什么这么做是对的呢，因为我们在循环的过程中，我们把原序列分成了两部分，后半部部分已经遍历过（已入桶），前半部分是待遍历的（未入桶），那么我们求到的 i - 1i−1 位置的前缀和就是「已入桶」的元素中比 a_i 小的元素的总和，而这些元素在原序列中排在 a_i 的后面，但它们本应该排在 a_i 的前面，这样就形成了逆序对。
+
+我们显然可以用数组来实现这个桶，可问题是如果 a_i 中有很大的元素，比如 10^9，我们就要开一个大小为 10^9 的桶，内存中是存不下的。这个桶数组中很多位置是 0，有效位置是稀疏的，我们要想一个办法让有效的位置全聚集到一起，减少无效位置的出现，这个时候我们就需要用到一个方法——离散化。
+
+离散化一个序列的前提是我们只关心这个序列里面元素的相对大小，而不关心绝对大小（即只关心元素在序列中的排名）；离散化的目的是让原来分布零散的值聚集到一起，减少空间浪费。那么如何获得元素排名呢，我们可以对原序列排序后去重，对于每一个 a_i 通过二分查找的方式计算排名作为离散化之后的值。当然这里也可以不去重，不影响排名。
+
+**代码**
+
+```py
+# Python3
+class BIT:
+    def __init__(self, n):
+        self.n = n
+        self.tree = [0] * (n + 1)
+
+    @staticmethod
+    def lowbit(x):
+        return x & (-x)
+
+    def query(self, x):
+        ret = 0
+        while x > 0:
+            ret += self.tree[x]
+            x -= BIT.lowbit(x)
+        return ret
+
+    def update(self, x):
+        while x <= self.n:
+            self.tree[x] += 1
+            x += BIT.lowbit(x)
+
+class Solution:
+    def reversePairs(self, nums: List[int]) -> int:
+        n = len(nums)
+        # 离散化
+        tmp = sorted(nums)
+        for i in range(n):
+            nums[i] = bisect.bisect_left(tmp, nums[i]) + 1
+        # 树状数组统计逆序对
+        bit = BIT(n)
+        ans = 0
+        for i in range(n - 1, -1, -1):
+            ans += bit.query(nums[i] - 1)
+            bit.update(nums[i])
+        return ans
+```
+
+```c++
+// C++
+class BIT {
+private:
+    vector<int> tree;
+    int n;
+
+public:
+    BIT(int _n): n(_n), tree(_n + 1) {}
+
+    static int lowbit(int x) {
+        return x & (-x);
+    }
+
+    int query(int x) {
+        int ret = 0;
+        while (x) {
+            ret += tree[x];
+            x -= lowbit(x);
+        }
+        return ret;
+    }
+
+    void update(int x) {
+        while (x <= n) {
+            ++tree[x];
+            x += lowbit(x);
+        }
+    }
+};
+
+class Solution {
+public:
+    int reversePairs(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> tmp = nums;
+        // 离散化
+        sort(tmp.begin(), tmp.end());
+        for (int& num: nums) {
+            num = lower_bound(tmp.begin(), tmp.end(), num) - tmp.begin() + 1;
+        }
+        // 树状数组统计逆序对
+        BIT bit(n);
+        int ans = 0;
+        for (int i = n - 1; i >= 0; --i) {
+            ans += bit.query(nums[i] - 1);
+            bit.update(nums[i]);
+        }
+        return ans;
+    }
+};
+```
+
+```golang
+// Golang
+func reversePairs(nums []int) int {
+     n := len(nums)
+     tmp := make([]int, n)
+     copy(tmp, nums)
+     sort.Ints(tmp)
+
+     for i := 0; i < n; i++ {
+         nums[i] = sort.SearchInts(tmp, nums[i]) + 1
+     }
+
+     bit := BIT{
+         n: n,
+         tree: make([]int, n + 1),
+     }
+
+     ans := 0
+     for i := n - 1; i >= 0; i-- {
+         ans += bit.query(nums[i] - 1)
+         bit.update(nums[i])
+     }
+     return ans
+}
+
+type BIT struct {
+    n int
+    tree []int
+}
+
+func (b BIT) lowbit(x int) int { return x & (-x) }
+
+func (b BIT) query(x int) int {
+    ret := 0
+    for x > 0 {
+        ret += b.tree[x]
+        x -= b.lowbit(x)
+    }
+    return ret
+}
+
+func (b BIT) update(x int) {
+    for x <= b.n {
+        b.tree[x]++
+        x += b.lowbit(x)
+    }
+}
+
+**复杂度**
+
+- 时间复杂度：离散化的过程中使用了时间代价为 O(n log n) 的排序，单次二分的时间代价为 O(log n)，一共有 nn 次，总时间代价为 O(n log n)；循环执行 nn 次，每次进行 O(log n) 的修改和 O(log n) 的查找，总时间代价为 O(n log n)。故渐进时间复杂度为 O(n log n)。
+
+- 空间复杂度：树状数组需要使用长度为 n 的数组作为辅助空间，故渐进空间复杂度为 O(n)。
+
+**注**
+作者：LeetCode-Solution
+链接：https://leetcode-cn.com/problems/shu-zu-zhong-de-ni-xu-dui-lcof/solution/shu-zu-zhong-de-ni-xu-dui-by-leetcode-solution/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
