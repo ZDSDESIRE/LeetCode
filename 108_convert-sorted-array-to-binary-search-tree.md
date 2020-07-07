@@ -209,6 +209,279 @@ func helper(nums []int, left, right int) *TreeNode {
 
 - 空间复杂度：O(log n)，其中 n 是数组的长度。空间复杂度不考虑返回值，因此空间复杂度主要取决于递归栈的深度，递归栈的深度是 O(log n)。
 
+##### 方法二：中序遍历，总是选择中间位置右边的数字作为根节点
+
+选择中间位置右边的数字作为根节点，则根节点的下标为 mid = (left + right + 1)/2，此处的除法为整数除法。
+![5](https://assets.leetcode-cn.com/solution-static/108/108_fig5.png)
+
+```py
+# Python3
+class Solution:
+    def sortedArrayToBST(self, nums: List[int]) -> TreeNode:
+        def helper(left, right):
+            if left > right:
+                return None
+
+            # 总是选择中间位置右边的数字作为根节点
+            mid = (left + right + 1) // 2
+
+            root = TreeNode(nums[mid])
+            root.left = helper(left, mid - 1)
+            root.right = helper(mid + 1, right)
+            return root
+
+        return helper(0, len(nums) - 1)
+```
+
+```java
+// Java
+class Solution {
+    public TreeNode sortedArrayToBST(int[] nums) {
+        return helper(nums, 0, nums.length - 1);
+    }
+
+    public TreeNode helper(int[] nums, int left, int right) {
+        if (left > right) {
+            return null;
+        }
+
+        // 总是选择中间位置右边的数字作为根节点
+        int mid = (left + right + 1) / 2;
+
+        TreeNode root = new TreeNode(nums[mid]);
+        root.left = helper(nums, left, mid - 1);
+        root.right = helper(nums, mid + 1, right);
+        return root;
+    }
+}
+```
+
+```c++
+// C++
+class Solution {
+public:
+    TreeNode* sortedArrayToBST(vector<int>& nums) {
+        return helper(nums, 0, nums.size() - 1);
+    }
+
+    TreeNode* helper(vector<int>& nums, int left, int right) {
+        if (left > right) {
+            return nullptr;
+        }
+
+        // 总是选择中间位置右边的数字作为根节点
+        int mid = (left + right + 1) / 2;
+
+        TreeNode* root = new TreeNode(nums[mid]);
+        root->left = helper(nums, left, mid - 1);
+        root->right = helper(nums, mid + 1, right);
+        return root;
+    }
+};
+```
+
+```c#
+// C#
+public class Solution
+{
+    public TreeNode SortedArrayToBST(int[] nums)
+    {
+        return Helper(nums, 0, nums.Length - 1);
+    }
+
+    public TreeNode Helper(int[] nums, int left, int right)
+    {
+        if (left > right)
+        {
+            return null;
+        }
+
+        // 总是选择中间位置右边的数字作为根节点
+        int mid = (left + right + 1) / 2;
+
+        TreeNode root = new TreeNode(nums[mid]);
+        root.left = Helper(nums, left, mid - 1);
+        root.right = Helper(nums, mid + 1, right);
+        return root;
+    }
+}
+```
+
+```c
+// C
+struct TreeNode* helper(int* nums, int left, int right) {
+    if (left > right) {
+        return NULL;
+    }
+
+    // 总是选择中间位置右边的数字作为根节点
+    int mid = (left + right + 1) / 2;
+
+    struct TreeNode* root = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    root->val = nums[mid];
+    root->left = helper(nums, left, mid - 1);
+    root->right = helper(nums, mid + 1, right);
+    return root;
+}
+
+struct TreeNode* sortedArrayToBST(int* nums, int numsSize) {
+    return helper(nums, 0, numsSize - 1);
+}
+```
+
+```golang
+// Golang
+func sortedArrayToBST(nums []int) *TreeNode {
+    return helper(nums, 0, len(nums) - 1)
+}
+
+func helper(nums []int, left, right int) *TreeNode {
+    if left > right {
+        return nil
+    }
+
+    // 总是选择中间位置右边的数字作为根节点
+    mid := (left + right + 1) / 2
+    root := &TreeNode{Val: nums[mid]}
+    root.Left = helper(nums, left, mid - 1)
+    root.Right = helper(nums, mid + 1, right)
+    return root
+}
+```
+
+**复杂度分析**
+
+- 时间复杂度：O(n)，其中 n 是数组的长度。每个数字只访问一次。
+
+- 空间复杂度：O(log n)，其中 n 是数组的长度。空间复杂度不考虑返回值，因此空间复杂度主要取决于递归栈的深度，递归栈的深度是 O(log n)。
+
+##### 方法三：中序遍历，选择任意一个中间位置数字作为根节点
+
+选择任意一个中间位置数字作为根节点，则根节点的下标为 mid = (left + right)/2 和 mid = (left + right + 1)/2 两者中随机选择一个，此处的除法为整数除法。
+![6](https://assets.leetcode-cn.com/solution-static/108/108_fig6.png)
+
+```py
+# Python3
+class Solution:
+    def sortedArrayToBST(self, nums: List[int]) -> TreeNode:
+        def helper(left, right):
+            if left > right:
+                return None
+
+            # 选择任意一个中间位置数字作为根节点
+            mid = (left + right + randint(0, 1)) // 2
+
+            root = TreeNode(nums[mid])
+            root.left = helper(left, mid - 1)
+            root.right = helper(mid + 1, right)
+            return root
+
+        return helper(0, len(nums) - 1)
+```
+
+```c++
+// C++
+class Solution {
+public:
+    TreeNode* sortedArrayToBST(vector<int>& nums) {
+        return helper(nums, 0, nums.size() - 1);
+    }
+
+    TreeNode* helper(vector<int>& nums, int left, int right) {
+        if (left > right) {
+            return nullptr;
+        }
+
+        // 选择任意一个中间位置数字作为根节点
+        int mid = (left + right + rand() % 2) / 2;
+
+        TreeNode* root = new TreeNode(nums[mid]);
+        root->left = helper(nums, left, mid - 1);
+        root->right = helper(nums, mid + 1, right);
+        return root;
+    }
+};
+```
+
+```java
+// Java
+class Solution {
+    Random rand = new Random();
+
+    public TreeNode sortedArrayToBST(int[] nums) {
+        return helper(nums, 0, nums.length - 1);
+    }
+
+    public TreeNode helper(int[] nums, int left, int right) {
+        if (left > right) {
+            return null;
+        }
+
+        // 选择任意一个中间位置数字作为根节点
+        int mid = (left + right + rand.nextInt(2)) / 2;
+
+        TreeNode root = new TreeNode(nums[mid]);
+        root.left = helper(nums, left, mid - 1);
+        root.right = helper(nums, mid + 1, right);
+        return root;
+    }
+}
+```
+
+```c#
+// C#
+public class Solution
+{
+    public TreeNode SortedArrayToBST(int[] nums)
+    {
+        return Helper(nums, 0, nums.Length - 1);
+    }
+
+    public TreeNode Helper(int[] nums, int left, int right)
+    {
+        if (left > right)
+        {
+            return null;
+        }
+
+        // 选择任意一个中间位置数字作为根节点
+        int mid = (left + right + new Random().Next(2)) / 2;
+
+        TreeNode root = new TreeNode(nums[mid]);
+        root.left = Helper(nums, left, mid - 1);
+        root.right = Helper(nums, mid + 1, right);
+        return root;
+    }
+}
+```
+
+```golang
+// Golang
+func sortedArrayToBST(nums []int) *TreeNode {
+    rand.Seed(time.Now().UnixNano())
+    return helper(nums, 0, len(nums) - 1)
+}
+
+func helper(nums []int, left, right int) *TreeNode {
+    if left > right {
+        return nil
+    }
+
+    // 选择任意一个中间位置数字作为根节点
+    mid := (left + right + rand.Intn(2)) / 2
+    root := &TreeNode{Val: nums[mid]}
+    root.Left = helper(nums, left, mid - 1)
+    root.Right = helper(nums, mid + 1, right)
+    return root
+}
+```
+
+**复杂度分析**
+
+- 时间复杂度：O(n)，其中 n 是数组的长度。每个数字只访问一次。
+
+- 空间复杂度：O(log n)，其中 n 是数组的长度。空间复杂度不考虑返回值，因此空间复杂度主要取决于递归栈的深度，递归栈的深度是 O(log n)。
+
 **注**
 作者：LeetCode-Solution
 链接：https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/solution/jiang-you-xu-shu-zu-zhuan-huan-wei-er-cha-sou-s-33/
