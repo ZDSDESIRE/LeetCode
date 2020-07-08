@@ -36,10 +36,11 @@ class Solution:
 
 #### 参考
 
-方法一：一次遍历
+##### 方法一：一次遍历
+
 题目的约束让这个问题变得简单，使得我们可以在一次遍历解决它。
 
-算法：
+**算法：**
 
 - 用一个计数器 count 记录 1 的数量，另一个计数器 maxCount 记录当前最大的 1 的数量。
 - 当我们遇到 1 时，count 加一。
@@ -102,11 +103,6 @@ class Solution {
 # Python
 def findMaxConsecutiveOnes(self, nums):
   return max(map(len, ''.join(map(str, nums)).split('0')))
-
-作者：LeetCode
-链接：https://leetcode-cn.com/problems/max-consecutive-ones/solution/zui-da-lian-xu-1de-ge-shu-by-leetcode/
-来源：力扣（LeetCode）
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 ```
 
 **注**
