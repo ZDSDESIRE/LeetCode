@@ -1,6 +1,6 @@
 ### 23.合并 K 个排序链表（困难）
 
-合并 k 个排序链表，返回合并后的排序链表。请分析和描述算法的复杂度。
+合并 k 个排序链表，返回合并后的排序链表。请分析和描述算法的复杂度。
 
 示例：
 
@@ -19,6 +19,10 @@
 链接：https://leetcode-cn.com/problems/merge-k-sorted-lists
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 
+```py
+# 堆（Heap）  # 链表（Linked List）  # 分治算法（Divide and Conquer）
+```
+
 #### 提交
 
 ```py
@@ -29,6 +33,7 @@
 #         self.val = x
 #         self.next = None
 
+# 利用 Python 的 heapq 模块进行堆排序
 class Solution(object):
     def mergeKLists(self, lists: List[ListNode]) -> ListNode:
         import heapq
@@ -236,7 +241,7 @@ public:
 };
 ```
 
-复杂度
+**复杂度**
 
 - 时间复杂度：考虑优先队列中的元素不超过 k 个，那么插入和删除的时间代价为 O(log k)，这里最多有 knkn 个点，对于每个点都被插入删除各一次，故总的时间代价即渐进时间复杂度为 O(k n × log k)。
 

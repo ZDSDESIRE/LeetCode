@@ -38,6 +38,15 @@
 请选用 C 语言的用户尝试使用 O(1) 额外空间复杂度的原地解法
 ```
 
+**注**
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/reverse-words-in-a-string
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+```py
+# 字符串（String）
+```
+
 #### 提交
 
 ```py
@@ -73,8 +82,8 @@ class Solution:
 ```js
 // JavaScript
 var reverseWords = function (s) {
-  return s.trim().split(/\s+/).reverse().join(" ");
-};
+  return s.trim().split(/\s+/).reverse().join(' ')
+}
 ```
 
 ```java
@@ -93,8 +102,8 @@ class Solution {
 
 **复杂度分析**
 
-- 时间复杂度：O(N)O(N)，其中 N 为输入字符串的长度。
-- 空间复杂度：O(N)O(N)，用来存储字符串分割之后的结果。
+- 时间复杂度：O(N)，其中 N 为输入字符串的长度。
+- 空间复杂度：O(N)，用来存储字符串分割之后的结果。
 
 ##### 方法二：自行编写对应的函数
 
@@ -376,3 +385,9 @@ class Solution {
 - 时间复杂度：O(N)，其中 N 为输入字符串的长度。
 
 - 空间复杂度：O(N)，双端队列存储单词需要 O(N) 的空间。
+
+**注**
+作者：LeetCode-Solution
+链接：https://leetcode-cn.com/problems/reverse-words-in-a-string/solution/fan-zhuan-zi-fu-chuan-li-de-dan-ci-by-leetcode-sol/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。

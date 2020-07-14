@@ -22,6 +22,15 @@
 
 ##### 相关题目：[409.最长回文串](409_longest-palindrome.md)
 
+**注**
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/longest-palindromic-substring
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+```py
+# 字符串（String）  # 动态规划（DP）
+```
+
 #### 提交
 
 ##### 提交 1（算法有误，题目理解有误导致）

@@ -32,6 +32,10 @@
 链接：https://leetcode-cn.com/problems/intersection-of-two-arrays-ii
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 
+```py
+# 排序（Sort）  # 哈希表（Hash Table）  # 双指针（Two Pointers）  # 二分查找（Binary Search）
+```
+
 #### 提交
 
 ```py
