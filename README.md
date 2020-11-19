@@ -65,3 +65,8 @@ if __name__ == '__main__':
 曼哈顿距离依赖座标系统的转度，而非系统在坐标轴上的平移或映射。当坐标轴变动时，点间的距离就会不同。
 
 曼哈顿距离和欧式距离一般用途不同，无相互替代性。
+
+关于各种距离的比较，请参考：
+
+- [从 K 近邻算法、距离度量谈到 KD 树、SIFT+BBF 算法](https://blog.csdn.net/v_july_v/article/details/8203674)
+- [距离计算方法总结](https://www.cnblogs.com/soyo/p/6893551.html)
