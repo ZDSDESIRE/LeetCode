@@ -269,3 +269,9 @@ struct ListNode *insertionSortList(struct ListNode *head) {
 - 时间复杂度：O(n^2)，其中 n 是链表的长度。
 
 - 空间复杂度：O(1)。
+
+**注**
+作者：LeetCode-Solution
+链接：https://leetcode-cn.com/problems/insertion-sort-list/solution/dui-lian-biao-jin-xing-cha-ru-pai-xu-by-leetcode-s/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
