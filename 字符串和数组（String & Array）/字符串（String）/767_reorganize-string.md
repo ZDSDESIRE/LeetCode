@@ -35,46 +35,24 @@
 
 ```js
 // JavaScript
-var reorganizeString = function (S) {
-  var h = new Map(),
-    r = [],
-    odd = -1,
-    even = -2,
-    m = S.length >> 1,
-    b = (S.length + 1) >> 1;
-  for (var i = 0; i < S.length; i++)
-    h.set(S[i], h.has(S[i]) ? h.get(S[i]) + 1 : 1);
-  h.forEach((n, s, _, i = n) => {
-    if (n > b) (r = []), h.clear();
-    else
-      while (i--)
-        r[n <= m && odd < S.length - 2 ? (odd += 2) : (even += 2)] = s;
-  });
-  return r.join("");
-};
-
 /**
  * @param {string} S
  * @return {string}
  */
 var reorganizeString = function (S) {
   let len = S.length;
-  let half = len % 2 === 0 ? len / 2 : (S.length + 1) / 2;
-  let mp = new Map();
+  let map = new Map();
   let arr = [];
   for (let i = 0; i <= len - 1; i++) {
-    mp.set(S[i], mp.get(S[i]) ? mp.get(S[i]) + 1 : 1);
-    if (mp.get(S[i]) > half) {
-      return "";
-    }
+    map.set(S[i], map.get(S[i]) ? map.get(S[i]) + 1 : 1); // 统计每个字符出现的次数
+    if (map.get(S[i]) > (len % 2 == 0 ? len / 2 : (len + 1) / 2)) return ""; // 若字符次数超过字符串长度的一半，则返回“”。
   }
   let odd = -1;
   let even = -2;
-  mp.forEach((index, str) => {
-    let i = index;
-    while (i--) {
-      let ind = index <= len / 2 && odd < len - 2 ? (odd += 2) : (even += 2);
-      arr[ind] = str;
+  map.forEach((index, str) => {
+    let j = index;
+    while (j--) {
+      arr[index <= len / 2 && odd < len - 2 ? (odd += 2) : (even += 2)] = str;  // 插入字符
     }
   });
   return arr.join("");
