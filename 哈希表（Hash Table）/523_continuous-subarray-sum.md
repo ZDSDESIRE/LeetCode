@@ -46,7 +46,7 @@
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 
 ```py
-# 数学（Math）  # 动态规划（DP）
+# 数学（Math）  # 哈希表（Hash Table）
 ```
 
 #### 提交
@@ -69,7 +69,7 @@ class Solution:
          return False
 # 前缀和 + 哈希表
 class Solution:
-    def checkSubarraySum(self, nums, k):
+    def checkSubarraySum(self, nums: List[int], k: int) -> bool:
         if len(nums) < 2: return False
         tag  = {0: -1}
         pre = 0
